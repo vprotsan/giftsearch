@@ -1,31 +1,34 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 import SearchForm from './Components/SearchForm';
 import GifList from './Components/GifList';
 
-export default class App extends Component {
+class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      gifs: []
+      gifs: [],
     }
   }
 
   componentDidMount() {
-    fetch("http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC")
-    .then(response => response.json())
-    .then(responseData => {
-      this.setState({ gifs: responseData.data});
-    })
-    .catch(error => {
-      console.log('Error fetching and parsing data');
-    });
+     var that = this;
+     axios.get("http://api.giphy.com/v1/gifs/trending?api_key=NJYstCHsYkf2qjsbP0e7aiOVDyQhtURZ")
+          .then(function(response) {
+            that.setState({
+              gifs: response.data.data
+            });
+          })
+          .catch(function(error){
+            console.log(error);
+          })
   }
 
   render() {
-    console.log(this.state.gifs);
-    
+    console.log("curr state in reder: " + this.state.gifs);
+
     return (
       <div>
         <div className="main-header">
@@ -35,9 +38,11 @@ export default class App extends Component {
           </div>
         </div>
         <div className="main-content">
-          <GifList />
+          <GifList data={this.state.gifs}/>
         </div>
       </div>
     );
   }
 }
+
+export default App;
