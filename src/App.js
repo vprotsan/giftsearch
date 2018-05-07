@@ -14,24 +14,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-     var that = this;
-     axios.get("http://api.giphy.com/v1/gifs/trending?api_key=NJYstCHsYkf2qjsbP0e7aiOVDyQhtURZ")
-          .then(function(response) {
-            that.setState({
-              gifs: response.data.data
-            });
-          })
-          .catch(function(error){
-            console.log(error);
-          })
+    this.performSearch();
   }
 
-  performSearch = (query) => {
+  performSearch = (query = 'cats') => {
     var that = this;
-    axios.get("http://api.giphy.com/v1/gifs/search?q=${query}&limit=24&api_key=NJYstCHsYkf2qjsbP0e7aiOVDyQhtURZ")
+    axios.get(`http://api.giphy.com/v1/gifs/search?q=${query}&limit=24&api_key=NJYstCHsYkf2qjsbP0e7aiOVDyQhtURZ`)
          .then(function(response) {
            that.setState({
-             gifs: response.data.data
+             gifs: response.data.data,
+             loading: false
            });
          })
          .catch(function(error){
@@ -40,7 +32,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("curr state in reder: " + this.state.gifs);
 
     return (
       <div>
@@ -51,7 +42,11 @@ class App extends Component {
           </div>
         </div>
         <div className="main-content">
-          <GifList data={this.state.gifs}/>
+          {
+            (this.state.loading)
+            ? <p>Loading...</p>
+            : <GifList data={this.state.gifs}/>
+          }
         </div>
       </div>
     );
