@@ -19,7 +19,7 @@ class App extends Component {
 
   performSearch = (query = 'cats') => {
     var that = this;
-    axios.get(`api.giphy.com/v1/gifs/search?q=${query}&limit=24&api_key=NJYstCHsYkf2qjsbP0e7aiOVDyQhtURZ`)
+    axios.get(`https://api.giphy.com/v1/gifs/search?q=${query}&limit=24&api_key=NJYstCHsYkf2qjsbP0e7aiOVDyQhtURZ`)
          .then(function(response) {
            that.setState({
              gifs: response.data.data,
